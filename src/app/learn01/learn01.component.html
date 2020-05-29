@@ -2,23 +2,40 @@
   <header class="header">
     <h1>todos</h1>
     <!--点击添加任务-->
-    <input class="new-todo" placeholder="What needs to be done?" autofocus (keyup.enter)="addTodo($event)">
+    <input class="new-todo"
+        placeholder="What needs to be done?"
+        autofocus (keyup.enter)="addTodo($event)">
   </header>
 
   <ng-template #todo [ngIf]="todos.length">
     <section class="main">
-      <input id="toggle-all" class="toggle-all" type="checkbox" [checked]="toggleAll" (change)="toggleAll = $event.target.checked">
+      <input id="toggle-all"
+        class="toggle-all"
+        type="checkbox"
+        [checked]="toggleAll"
+        (change)="toggleAll = $event.target.checked">
       <!--事件处理() 属性绑定[] -->
       <label for="toggle-all">Mark all as complete</label>
       <ul class="todo-list">
-        <li *ngFor="let todo of todos; let i = index;" [ngClass]="{completed: todo.done}">
+        <li *ngFor="let todo of todos; let i = index;"
+            [ngClass]="{
+                completed: todo.done,
+                editing: currentEditing === todo
+            }">
           <!--数据列表显示 有无数据用到的指令 *ngFor  [ngIf]结合ng-template标签-->
           <div class="view">
-            <input class="toggle" type="checkbox" checked [(ngModel)]="todo.done"><!--使用指令 ngModel 双向绑定数据 ngClass 接收对象的key指定css类名,value给定一个boolean值,为boolean为true时作用该类名-->
-            <label>{{ todo.title }}</label>
+            <input class="toggle"
+                type="checkbox"
+                checked [(ngModel)]="todo.done">
+                <!--使用指令 ngModel 双向绑定数据 ngClass 接收对象的key指定css类名,value给定一个boolean值,为boolean为true时作用该类名-->
+            <label (dblclick)="currentEditing = todo">{{ todo.title }}</label>
             <button class="destroy" (click)="removeTodo(i)"></button>
           </div>
-          <input class="edit" value="Create a TodoMVC template">
+          <input class="edit"
+            [value]="todo.title"
+            (keyup)="handleEditKeyup($event)"
+            (keyup.enter)="saveEdit($event, todo)"
+            (blur)="currentEditing = null">
         </li>
       </ul>
     </section>

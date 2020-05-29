@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { R3TargetBinder } from '@angular/compiler';
 
 const todos = [
   {
@@ -15,11 +16,17 @@ const todos = [
 })
 
 export class Learn01Component implements OnInit {
-  todos: {
+  public todos: {
     id: number,
     title: string,
     done: boolean,
   }[] = todos;
+
+  public currentEditing: {
+    id: number,
+    title: string,
+    done: boolean,
+  } = null;
 
   constructor() { }
 
@@ -59,4 +66,21 @@ export class Learn01Component implements OnInit {
     this.todos.splice(index, 1);
   }
 
+  saveEdit(event, todo) {
+    // 保存
+    // console.log('click enter');
+    // console.log('todo===', todo);
+    // console.log('event===', event );
+    todo.title = event.target.value;
+    // 去除编辑样式
+    this.currentEditing = null;
+  }
+
+  handleEditKeyup(event) {
+    const {keyCode, target} = event;
+    if (keyCode === 27) {
+      target.value = this.currentEditing.title;
+      this.currentEditing = null;
+    }
+  }
 }
