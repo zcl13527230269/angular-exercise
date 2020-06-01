@@ -7,6 +7,11 @@ const todos = [
     title: 'lily',
     done: false
   },
+  {
+    id: 2,
+    title: 'mary',
+    done: true
+  },
 ];
 
 @Component({
@@ -20,7 +25,7 @@ export class Learn01Component implements OnInit {
     id: number,
     title: string,
     done: boolean,
-  }[] = todos;
+  }[] = JSON.parse(window.localStorage.getItem('todos') || '[]');
 
   public currentEditing: {
     id: number,
@@ -28,10 +33,36 @@ export class Learn01Component implements OnInit {
     done: boolean,
   } = null;
 
+  public visibility = 'all';
+
+  // 实现导航切换数据过滤功能
+  // 1、提供一个属性，该属性回根据当前点击的链接返回过滤之后的数据
+  // filterTodos
+  // 2、提供一个属性，用来存储当前点击的链接标识
+  // visibility 字符串 all active completed
+  // 3、为链接添加点击事件，当点击导航链接时改变
+
   constructor() { }
 
   ngOnInit(): void {
+    this.hashchangeHandler(); // 页面刷新时保持过滤状态
+    window.onhashchange = this.hashchangeHandler.bind(this); // 绑定this，否则指向是widow
+  }
 
+  // 当Angular组件数据发生改变的时候，ngDoCheck钩子函数会被触发
+  // 我们要做的是在这个钩子函数中去持久化存储我们的todos数据
+  ngDoCheck(): void {
+    window.localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+
+  get filterTodos() {
+    if (this.visibility === 'all') {
+      return this.todos;
+    } else if (this.visibility === 'active') {
+      return this.todos.filter(t => !t.done);
+    } else if (this.visibility === 'completed') {
+      return this.todos.filter(t => t.done);
+    }
   }
 
   addTodo(e): void {
@@ -58,7 +89,7 @@ export class Learn01Component implements OnInit {
   }
 
   set toggleAll(val) {// set赋值器 get set是存储了方法的属性,可以在标签上直接引用
-    this.todos.forEach(t => t.done = val) ;
+    this.todos.forEach(t => t.done = val);
   }
 
   removeTodo(index: number) {
@@ -77,10 +108,28 @@ export class Learn01Component implements OnInit {
   }
 
   handleEditKeyup(event) {
-    const {keyCode, target} = event;
+    const { keyCode, target } = event;
     if (keyCode === 27) {
       target.value = this.currentEditing.title;
       this.currentEditing = null;
+    }
+  }
+
+  hashchangeHandler() {
+    // 当用户点击了锚点的时候，我们需要获取当前的锚点标识
+    // 然后动态的将根组件中的visibility设置为当前点击的锚点标识
+    const hash = window.location.hash.substr(1);
+    console.log(hash);
+    switch (hash) {
+      case '/':
+        this.visibility = 'all';
+        break;
+      case '/active':
+        this.visibility = 'active';
+        break;
+      case '/completed':
+        this.visibility = 'completed';
+        break;
     }
   }
 }
