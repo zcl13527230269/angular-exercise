@@ -1,0 +1,71 @@
+<!-- 模板驱动表单 -->
+<div class="container" [hidden]="submitted">
+    <h1>Hero Form</h1>
+    <form #heroForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" 
+        required
+        [(ngModel)]="model.name"
+        name="name"
+        #name="ngModel"
+        >
+        <!-- 在表单中使用[(ngModel)]时,必须要定义name属性 -->
+        <!-- NgModel 指令不仅仅跟踪状态。它还使用特定的 Angular CSS 类来更新控件，以反映当前状态 -->
+        <div [hidden]="name.valid || name.pristine"
+        class="alert alert-danger"
+        >
+        <!-- 当控件是有效的(valid)或全新的(pristine)时，隐藏消息。 “全新的”意味着从它显示在表单中开始，用户还从未修改过它的值 -->
+        Name is required
+        </div>
+      </div>
+      <!-- ng-touched|ng-untouched 控件是否被访问过,ng-dirty|ng-pristine 控件的值是否变化,ng-validng-invalid 控件的值是否有效存在 -->
+
+      <div class="form-group">
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" class="form-control" id="alterEgo"
+        [(ngModel)]="model.alterEgo"
+        name="alterEgo"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="power">Hero Power</label>
+        <select class="form-control" id="power" required
+        [(ngModel)]="model.power"
+        name="power"
+        >
+        <!-- 每个 input 元素都有 name 属性，Angular 表单用它注册控件。 -->
+          <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn btn-info" (click)="newHero(); heroForm.reset()">New Hero</button>      
+
+      <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
+      
+    </form>
+</div>
+<div [hidden]="!submitted">
+    <h2>You submitted the following:</h2>
+    <div class="row">
+      <div class="col-xs-3">Name</div>
+      <div class="col-xs-9">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Alter Ego</div>
+      <div class="col-xs-9">{{ model.alterEgo }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Power</div>
+      <div class="col-xs-9">{{ model.power }}</div>
+    </div>
+    <br>
+    <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+  </div>
+
+<!-- 模板驱动验证 
+  <input>元素自带一些HTML验证属性如required和minlenght
+  #name="ngModel"把NgModel导出成一个名叫name的局部变量,NgModel把自己空值的FormControl实例映射出去,可以检查控件的状态 ng-touched|ng-untouched
+  <div *ngIf="name.invalid && (name.dirty || name.touched)>元素的ngif只有在name错误和控制器为dirty||touched时展示嵌套的div
+-->

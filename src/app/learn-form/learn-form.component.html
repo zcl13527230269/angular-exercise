@@ -1,0 +1,82 @@
+<!-- 
+响应式表单：可扩展性、可复用性、可测试性
+模板驱动表单：添加简单的表单，可扩展性不强 
+
+共同构造块：
+FormControl 用于追踪单个表单控件的值和验证状态。
+FormGroup 用于追踪一个表单控件组的值和状态。
+FormArray 用于追踪表单控件数组的值和状态。
+
+对于响应式表单，每当控件值变化时，FormControl 实例就会返回一个新的值。
+对于模板驱动表单，favoriteColor 属性总是会修改成它的新值。
+-->
+<h3>响应式单个控件</h3>
+<input type="text" [formControl]="nameFormControl">
+
+<!-- <h3>模板驱动表单单个控件</h3>
+<input type="text" [(ngModel)]="favoriteColor"> -->
+
+<h3>响应式表单</h3>
+<!-- 响应式表单指令
+FormControlDirective 把一个独立的 FormControl 实例绑定到表单控件元素。 
+FormControlName 把一个现有 FormGroup 中的 FormControl 实例根据名字绑定到表单控件元素。
+FormGroupDirective 把一个现有的 FormGroup 实例绑定到 DOM 元素。
+FormGroupName 把一个内嵌的 FormGroup 实例绑定到一个 DOM 元素。
+FormArrayName 把一个内嵌的 FormArray 实例绑定到一个 DOM 元素。
+-->
+<label>
+    Name:
+    <input type="text" [formControl]="name">
+</label>
+
+<h3>管理表单控件的值</h3>
+<!-- 
+通过可观察对象 valueChanges，你可以在模板中使用 AsyncPipe 或在组件类中使用 subscribe() 方法来监听表单值的变化。
+使用 value 属性。它能让你获得当前值的一份快照。 
+-->
+<p>
+   ↑↑ Value:{{ name.value }}
+</p>
+<button nz-button nzType="primary" (click)="UpdateName()">Update Name</button>
+
+<h3>表单控件分组</h3>
+<!-- FormGroup 能跟踪一组 FormControl （比如一个表单）的表单状态 -->
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label>
+        First Name:<br/>
+        <input type="text" formControlName="firstName">
+    </label>
+    <br/>
+    <label>
+        Last Name:<br/>
+        <input type="text" formControlName="lastName">
+    </label>
+
+    <!-- FormGroup 可以让你把大型表单组织成一些稍小的、易管理的分组。 -->
+    <div formGroupName="address">
+        <h3>Address</h3>
+        <button nz-button nzType="primary" (click)="updateProfile()" type="button">update profile</button>
+        <br/>
+        <label>
+          Street:<br/>
+          <input type="text" formControlName="street">
+        </label>
+        <br/>
+        <label>
+          City:<br/>
+          <input type="text" formControlName="city">
+        </label>
+        <br/>
+        <label>
+          State:<br/>
+          <input type="text" formControlName="state">
+        </label>
+        <br/>
+        <label>
+          Zip Code:<br/>
+          <input type="text" formControlName="zip">
+        </label>
+      </div>
+
+    <button nz-button nzType="primary" type="submit">Submit</button>
+</form>
