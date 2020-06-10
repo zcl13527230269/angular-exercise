@@ -1,0 +1,69 @@
+<div class="login-container">
+  <header class="header">登录</header>
+  <div class="form">
+    <form nz-form class="form">
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="nameErrorTpl">
+          <div class="user-container">
+            <span class="icon-wrapper">
+              <i class="iconfont icon-phone"></i>
+            </span>
+            <input class="user-input" type="text" nz-input maxlength="11" placeholder="手机号">
+          </div>
+
+          <ng-template #nameErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              请输入你的登录号码
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              请输入11位的手机号码
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="pwdErrorTpl">
+          <div class="user-container">
+            <span class="icon-wrapper">
+              <i class="iconfont icon-password"></i>
+           </span>
+            <input class="pwd-input" type="password" nz-input  autocomplete="off" placeholder="密码" minlength="6" maxlength="20">
+          </div>
+          <ng-template #pwdErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              请输入你的密码
+            </ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">
+              密码不足6位
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="isDisplay">
+        <span class="form-label">验证码</span>
+        <nz-form-control [nzErrorTip]="'请输入验证码'">
+          <div class="captcha">
+            <div class="captcha-container">
+              <span class="icon-wrapper">
+                 <i class="iconfont icon-code"></i>
+              </span>
+              <input class="captcha-input" nz-input formControlName="captcha" id="captcha" maxlength="4">
+            </div>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <div class="find-password">
+            <a class="register-account" routerLink="/register">账号注册</a>
+            <a routerLink="/recover">忘记密码?</a>
+          </div>
+          <button type="submit" nz-button class="form-button" [nzType]="'primary'">登 录</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+.login-container {
+  min-height: 348px;
+  width: 400px;
+  background-color: #ccc;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.header {
+  background-color: #545f6e;
+  height: 50px;
+  color: #fff;
+  font-size: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  text-align: center;
+}
+
+
+.find-password {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }

@@ -1,0 +1,78 @@
+<div class="login-container">
+  <header class="header">注册账号</header>
+  <div class="form">
+    <form nz-form class="form">
+      <nz-form-item class="user-input">
+        <nz-form-control [nzErrorTip]="usernameErrorTpl">
+          <div class="user-container">
+            <span class="icon-wrapper">
+              <i class="iconfont icon-phone"></i>
+            </span>
+            <input class="user-input" type="text" nz-input maxlength="11" placeholder="手机号">
+          </div>
+          <ng-template #usernameErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              请输入你的手机号
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              请输入11位的手机号码
+            </ng-container>
+            <ng-container *ngIf="control.hasError('existence')">
+              账户已存在！
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="'请输入验证码'">
+          <div class="captcha">
+            <div class="user-container">
+              <span class="icon-wrapper">
+                <i class="iconfont icon-code"></i>
+              </span>
+              <input class="captcha-input" nz-input id="captcha" maxlength="6" placeholder="验证码">
+            </div>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="pwdErrorTpl">
+          <div class="user-container">
+            <span class="icon-wrapper">
+              <i class="iconfont icon-password"></i>
+            </span>
+            <input class="pwd-input" type="password" nz-input placeholder="密码" maxlength="20">
+          </div>
+          <ng-template #pwdErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              请输入你的密码
+            </ng-container>
+            <ng-container *ngIf="control.hasError('minlength')">
+              密码不足6位
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="'两次输入密码不一致，请重新输入'">
+          <div class="user-container">
+            <span class="icon-wrapper">
+              <i class="iconfont icon-password"></i>
+            </span>
+            <input class="pwd-input" type="password" nz-input placeholder="确认密码" maxlength="20">
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <button type="submit" nz-button class="form-button" [nzType]="'primary'">注 册</button>
+          <div class="return-login"><a routerLink="/login">有账号?去登录</a></div>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>
